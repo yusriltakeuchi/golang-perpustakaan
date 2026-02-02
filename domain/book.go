@@ -27,7 +27,7 @@ type BookRepository interface {
 
 type BookService interface {
 	Index(ctx context.Context) ([]dto.BookData, error)
-	Show(ctx context.Context, id string) (dto.BookData, error)
+	Show(ctx context.Context, id string) (dto.BookShowData, error)
 	Create(ctx context.Context, req dto.CreateBookRequest) error
 	Update(ctx context.Context, req dto.UpdateBookRequest) error
 	Delete(ctx context.Context, id string) error

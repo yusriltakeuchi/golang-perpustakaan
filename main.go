@@ -32,13 +32,17 @@ func main() {
 	// Initialize Repositories and Services
 	customerRepository := repository.NewCustomer(dbConnection)
 	userRepository := repository.NewUser(dbConnection)
+	bookRepository := repository.NewBook(dbConnection)
+	bookStockRepository := repository.NewBookStock(dbConnection)
 
 	customerService := service.NewCustomer(customerRepository)
 	authService := service.NewAuth(cnf, userRepository)
+	bookService := service.NewBook(bookRepository, bookStockRepository)
 
 	// Setup API Routes
 	api.NewCustomer(app, customerService, jwtMidd)
 	api.NewAuth(app, authService)
+	api.NewBook(app, bookService, jwtMidd)
 
 	app.Listen(cnf.Server.Host + ":" + cnf.Server.Port)
 }

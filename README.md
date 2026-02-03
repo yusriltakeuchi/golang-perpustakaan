@@ -95,9 +95,9 @@ Create a `.env` file in the root directory:
 
 ```env
 # Server Configuration
-SERVER_HOST=0.0.0.0
+SERVER_HOST=localhost
 SERVER_PORT=8080
-SERVER_ASSET=/storage
+SERVER_ASSET=http://localhost:8080/media
 
 # Database Configuration
 DB_HOST=localhost
@@ -120,7 +120,7 @@ STORAGE_BASE_PATH=./storage
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/yusriltakeuchi/golang-perpustakaan.git
 cd golang-perpustakaan
 ```
 
@@ -271,6 +271,11 @@ CREATE TABLE perpustakaan.media (
 	created_at timestamp(6) NOT NULL,
 	CONSTRAINT media_pk PRIMARY KEY (id)
 );
+
+-- Sample users
+INSERT INTO perpustakaan.users (id,email,"password") VALUES
+	 ('4246fb58-ff45-4d2a-8946-93e541fc39fd','admin@perpustakaan.id','$2a$12$Rvslxj25D4OU7w3Ercz/IucMiDkEp1dOCSwq902oWpy0mqcUx2GAq');
+
 ```
 
 ## License

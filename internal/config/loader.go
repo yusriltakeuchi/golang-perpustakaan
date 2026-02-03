@@ -16,8 +16,9 @@ func Get() *Config {
 	expInt, _ := strconv.Atoi(os.Getenv("JWT_EXP"))
 	return &Config{
 		Server: Server{
-			Host: os.Getenv("SERVER_HOST"),
-			Port: os.Getenv("SERVER_PORT"),
+			Host:  os.Getenv("SERVER_HOST"),
+			Port:  os.Getenv("SERVER_PORT"),
+			Asset: os.Getenv("SERVER_ASSET_URL"),
 		},
 		Database: Database{
 			Host:   os.Getenv("DB_HOST"),
@@ -31,6 +32,9 @@ func Get() *Config {
 		Jwt: Jwt{
 			Key: os.Getenv("JWT_KEY"),
 			Exp: expInt,
+		},
+		Storage: Storage{
+			BasePath: os.Getenv("STORAGE_PATH"),
 		},
 	}
 }

@@ -184,7 +184,6 @@ The server will start on `http://localhost:8080`
 - `PUT /journals/:id` - Return book (requires authentication)
 
 ### Media
-- `GET /media/:id` - Get media file (requires authentication)
 - `POST /media` - Upload media file (requires authentication)
 
 ## API Documentation

@@ -41,9 +41,12 @@ func (j *journalService) Index(ctx context.Context, se domain.JournalSearch) ([]
 	}
 	customerId := make([]string, 0)
 	bookId := make([]string, 0)
+	journalId := make([]string, 0)
+
 	for _, v := range journals {
 		customerId = append(customerId, v.CustomerId)
 		bookId = append(bookId, v.BookId)
+		journalId = append(journalId, v.Id)
 	}
 	customers := make(map[string]domain.Customer)
 	if len(customerId) > 0 {
@@ -57,6 +60,13 @@ func (j *journalService) Index(ctx context.Context, se domain.JournalSearch) ([]
 		bookDb, _ := j.bookRepository.FindByIds(ctx, bookId)
 		for _, v := range bookDb {
 			books[v.Id] = v
+		}
+	}
+	charges := make(map[string]domain.Charge)
+	if len(journalId) > 0 {
+		chargeDb, _ := j.chargeRepository.FindByJournalIds(ctx, journalId)
+		for _, v := range chargeDb {
+			charges[v.JournalId] = v
 		}
 	}
 
@@ -80,7 +90,7 @@ func (j *journalService) Index(ctx context.Context, se domain.JournalSearch) ([]
 			}
 		}
 
-		result = append(result, dto.JournalData{
+		journalData := dto.JournalData{
 			Id:         v.Id,
 			BookStock:  v.StockCode,
 			Book:       book,
@@ -88,7 +98,23 @@ func (j *journalService) Index(ctx context.Context, se domain.JournalSearch) ([]
 			BorrowedAt: v.BorrowedAt.Time,
 			ReturnedAt: v.ReturnedAt.Time,
 			DueAt:      v.DueAt.Time,
-		})
+			Status:     v.Status,
+		}
+
+		// Only set charge if it exists
+		if charge, exists := charges[v.Id]; exists {
+			journalData.Charge = &dto.ChargeData{
+				Id:           charge.Id,
+				JournalId:    charge.JournalId,
+				DaysLate:     charge.DaysLate,
+				DailyLateFee: charge.DailyLateFee,
+				Total:        charge.Total,
+				UserId:       charge.UserId,
+				CreatedAt:    charge.CreatedAt.Time,
+			}
+		}
+
+		result = append(result, journalData)
 	}
 	return result, nil
 }

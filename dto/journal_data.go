@@ -11,6 +11,7 @@ type JournalData struct {
 	BorrowedAt time.Time    `json:"borrowed_at"`
 	ReturnedAt time.Time    `json:"returned_at"`
 	DueAt      time.Time    `json:"due_at"`
+	Charge     *ChargeData  `json:"charge"`
 }
 
 type CreateJournalRequest struct {

@@ -18,6 +18,20 @@ func NewCharge(con *sql.DB) domain.ChargeRepository {
 	}
 }
 
+// FindByJournalIds implements [domain.ChargeRepository].
+func (c *chargeRepository) FindByJournalIds(ctx context.Context, journalIds []string) (charges []domain.Charge, err error) {
+	dataset := c.db.From("charges").Where(goqu.C("journal_id").Eq(journalIds))
+	err = dataset.ScanStructsContext(ctx, &charges)
+	return
+}
+
+// FindByJournalId implements [domain.ChargeRepository].
+func (c *chargeRepository) FindByJournalId(ctx context.Context, journalId string) (charge domain.Charge, err error) {
+	dataset := c.db.From("charges").Where(goqu.C("journal_id").Eq(journalId))
+	_, err = dataset.ScanStructContext(ctx, &charge)
+	return
+}
+
 // Save implements [domain.ChargeRepository].
 func (c *chargeRepository) Save(ctx context.Context, charge *domain.Charge) error {
 	executor := c.db.Insert("charges").Rows(charge).Executor()

@@ -17,4 +17,6 @@ type Charge struct {
 
 type ChargeRepository interface {
 	Save(ctx context.Context, charge *Charge) error
+	FindByJournalId(ctx context.Context, journalId string) (Charge, error)
+	FindByJournalIds(ctx context.Context, journalIds []string) ([]Charge, error)
 }

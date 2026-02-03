@@ -74,9 +74,12 @@ func (ja journalApi) Update(ctx *fiber.Ctx) error {
 	defer cancel()
 
 	id := ctx.Params("id")
+	// Get user claim from context
+	claim := util.GetUserClaim(ctx)
 
 	err := ja.journalService.Return(c, dto.ReturnJournalRequest{
 		JournalId: id,
+		UserId:    claim["id"].(string),
 	})
 	if err != nil {
 		return ctx.Status(http.StatusInternalServerError).

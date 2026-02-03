@@ -10,6 +10,7 @@ type JournalData struct {
 	Status     string       `json:"status"`
 	BorrowedAt time.Time    `json:"borrowed_at"`
 	ReturnedAt time.Time    `json:"returned_at"`
+	DueAt      time.Time    `json:"due_at"`
 }
 
 type CreateJournalRequest struct {

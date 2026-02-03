@@ -19,11 +19,15 @@ func NewBook(app *fiber.App, bookService domain.BookService, authMid fiber.Handl
 	ba := bookApi{
 		bookService: bookService,
 	}
-	app.Get("/books", authMid, ba.Index)
-	app.Post("/books", authMid, ba.Create)
-	app.Get("/books/:id", authMid, ba.Show)
-	app.Put("/books/:id", authMid, ba.Update)
-	app.Delete("/books/:id", authMid, ba.Delete)
+
+	// Creating api routes groups
+	book := app.Group("/books", authMid)
+
+	book.Get("", ba.Index)
+	book.Post("", ba.Create)
+	book.Get(":id", ba.Show)
+	book.Put(":id", ba.Update)
+	book.Delete(":id", ba.Delete)
 }
 
 func (ba bookApi) Index(ctx *fiber.Ctx) error {
